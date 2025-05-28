@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <!-- Application settings -->
+    <app name="ClickerGame" file="ClickerGame" main="Main" version="1.0.0" company="YourName" />
+    
+    <!-- Window settings -->
+    <window width="800" height="600" fps="60" background="0x14141e" hardware="true" vsync="true" />
+    
+    <!-- Source and assets -->
+    <source path="source" />
+    <assets path="assets" />
+    
+    <!-- Haxe libraries -->
+    <haxelib name="flixel" />
+    
+    <!-- Android settings -->
+    <android target-sdk-version="30" min-sdk-version="16" />
+    <android permission="android.permission.INTERNET" />
+    
+    <!-- Icons for Android -->
+    <icon path="assets/icon.png" />
+
+  <!-- Some Shit that i used to know -->
+</project>
