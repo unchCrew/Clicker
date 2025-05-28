@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Setup Haxe
       uses: krdlab/setup-haxe@v1
@@ -25,21 +25,40 @@ jobs:
         haxelib install openfl
     
     - name: Build for HTML5
-      run: haxe -main Main -cp source -lib flixel -js bin/html5/ClickerGame.js --macro "flixel.system.FlxBasePreloader.disable()"
+      run: |
+        mkdir -p bin/html5
+        haxe -main Main -cp source -lib flixel -js bin/html5/ClickerGame.js --macro "flixel.system.FlxBasePreloader.disable()"
+    
+    - name: Check HTML5 artifact
+      run: |
+        if [ ! -f bin/html5/ClickerGame.js ]; then
+          echo "Error: HTML5 artifact not found!"
+          exit 1
+        fi
+    
+    - name: Upload HTML5 artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: html5-build
+        path: bin/html5/
+        if-no-files-found: error
     
     - name: Build for Android
       run: |
         haxelib run lime setup android
+        mkdir -p bin/android
         haxe -main Main -cp source -lib flixel -android -D android -D lime_native bin/android/ClickerGame.apk
     
-    - name: Upload HTML5 artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: html5-build
-        path: bin/html5/
+    - name: Check Android artifact
+      run: |
+        if [ ! -f bin/android/ClickerGame.apk ]; then
+          echo "Error: Android APK not found!"
+          exit 1
+        fi
     
     - name: Upload Android APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: android-apk
         path: bin/android/ClickerGame.apk
+        if-no-files-found: error
